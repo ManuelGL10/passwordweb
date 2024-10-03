@@ -14,17 +14,9 @@ root.render(
   </React.StrictMode>
 );
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('Service Worker registrado con éxito:', registration);
-      })
-      .catch(err => {
-        console.log('Registro de Service Worker fallido:', err);
-      });
-    });
-  }
+if (navigator.serviceWorker){
+  navigator.serviceWorker.register('sw.js'); 
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
