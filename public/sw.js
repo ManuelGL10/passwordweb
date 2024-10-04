@@ -4,7 +4,16 @@ self.addEventListener('install', event => {
         cache.addAll([
             '/index.html',
             '/error.jpg', 
-            '/static/media/password.e18325d8dd09e30f4009.jpg'
+            '/static/media/password.e18325d8dd09e30f4009.jpg',
+            '/icon/icon32x32.png',
+            '/icon/icon48x48.png',
+            '/icon/icon64x64.png',
+            '/icon/icon128x128.png',
+            '/icon/icon192x192.png',
+            '/icon/icon256x256.png',
+            '/icon/icon512x512.png',
+            '/icon/icon1024x1024.png', 
+
         ])
     })
 

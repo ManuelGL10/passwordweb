@@ -1,25 +1,52 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "PassGuard",
+  "name": "PassGuard",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/icon/icon32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
     },
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "/icon/icon48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+    ,
+    {
+      "src": "/icon/icon64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
     },
     {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/icon/icon128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/icono192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/icon256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/icon512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/icon1024x1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
     }
   ],
   "start_url": ".",
   "display": "standalone",
+  "orientation":"any",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color":"#ffffff"
 }
