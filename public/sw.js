@@ -3,7 +3,7 @@ self.addEventListener('install', event => {
     caches.open('appShell4').then(cache => {
         cache.addAll([
             '/index.html',
-            '/manifest.json',
+            '/manifest.json',   
             '/error.jpg', 
             '/static/media/password.e18325d8dd09e30f4009.jpg',
             '/icon/icon32.png',

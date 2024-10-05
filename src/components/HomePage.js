@@ -1,10 +1,8 @@
 import React from 'react';
 import passwordImg from '../img/password.jpg'
-import { useScrollAnimation } from './useScrollAnimation';
 
 
 const HomePage = () => {
-  useScrollAnimation('#home-container');
 
   return(
       <section className="bg-white py-16">

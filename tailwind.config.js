@@ -3,14 +3,9 @@ module.exports = {
   content: [
     "./src/App.js",
     "./src/views/Inicio.jsx",
-    "./src/views/Login.jsx",
-    "./src/views/Register.jsx",
     "./src/views/DashBoard.jsx",
     "./src/components/NavBarHome.js",
     "./src/components/HomePage.js",
-    "./src/components/LoginPage.js",
-    "./src/components/RegisterPage.js",
-    "./src/components/DashBoardPage.js", 
     "./src/components/DBNavBar.js",
     "./src/components/PasswordTable.js",
 
