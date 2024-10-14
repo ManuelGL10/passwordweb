@@ -14,8 +14,13 @@ root.render(
   </React.StrictMode>
 );
 
-if (navigator.serviceWorker){
-  navigator.serviceWorker.register('sw.js'); 
+if('serviceWorker' in navigator && 'SyncManager' in window){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      console.log('Service Worker registrado', reg); 
+    }).catch(err => console('Error al registrar el Service Worker', err)); 
+  }); 
+  
 }
 
 // If you want to start measuring performance in your app, pass a function

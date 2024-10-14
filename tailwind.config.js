@@ -8,6 +8,7 @@ module.exports = {
     "./src/components/HomePage.js",
     "./src/components/DBNavBar.js",
     "./src/components/PasswordTable.js",
+    "./src/components/AddPasswordModal.js",
 
   ],
   theme: {
