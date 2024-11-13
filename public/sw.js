@@ -5,7 +5,7 @@ const DYNAMIC_CACHE = 'dynamic'; // Nombre de la caché dinamica
 const APP_SHELL = [
     '/index.html',
     '/manifest.json',   
-    '/error.jpg', 
+    '/error.jpg',
     '/static/media/password.e18325d8dd09e30f4009.jpg',
     '/icon/icon32.png',
     '/icon/icon48.png',

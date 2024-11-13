@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { IconEye, IconEyeOff, IconCopy, IconCheck, IconEdit, IconPlus, IconTrash} from "@tabler/icons-react";
 import AddPasswordModal from "./AddPasswordModal";
+import { data } from "autoprefixer";
 
 const PasswordTable = () => {
   const [passwords, setPasswords] = useState([]);
@@ -17,10 +18,16 @@ const PasswordTable = () => {
 
   // Obtener contraseñas de la API
   useEffect(() => {
-    axios.get("http://localhost:4000/get_passwords")
+    const userId = localStorage.getItem("userId"); // Obtener el userId desde el localStorage
+  
+    axios
+      .get("http://localhost:4000/get_passwords", {
+        headers: { userId }, // Agregar userId en los headers
+      })
       .then((response) => setPasswords(response.data))
       .catch((error) => console.error("Error al obtener contraseñas", error));
   }, []);
+  
 
   const togglePasswordVisibility = (id) => {
     setVisiblePasswords((prevState) => ({
@@ -43,12 +50,23 @@ const PasswordTable = () => {
 
   // Maneja el envío del formulario del modal
   const handleAddPassword = () => {
+
+    const userId = localStorage.getItem("userId"); 
+
+    if(!userId){
+      console.error("Error: No se ha encontrado el ID de usuario."); 
+      return;
+    }
+
     const passwordToSend = {
       nombre: newPassword.nombre, 
       tipo_elemento: newPassword.tipo_elemento,
       url: newPassword.url, 
-      password: newPassword.password
+      password: newPassword.password,
+      userId: userId,
     }; 
+
+    console.log("Enviando datos al servidor:", passwordToSend);
 
     //Intenta enviar los datos al servidor 
     fetch('http://localhost:4000/post_passwords', {
@@ -60,7 +78,9 @@ const PasswordTable = () => {
     })
     .then(response => {
       if (!response.ok){
-        throw new Error('Error en la API'); 
+        return response.json().then(data =>{
+          throw new Error(`Error en la API: ${data.message}`);
+        });
       }
       return response.json();
     })
@@ -123,7 +143,11 @@ const PasswordTable = () => {
 
     // Delete password from the database
     const deletePassword = (id) => {
-      axios.delete(`http://localhost:4000/delate/${id}`) // Cambia el puerto si es necesario
+      const userId = localStorage.getItem("userId"); // Obtén el userId de localStorage
+    
+      axios.delete(`http://localhost:4000/delete/${id}`, {
+        headers: { userId } // Envía el userId en el encabezado
+      })
         .then(() => {
           setPasswords(passwords.filter((password) => password._id !== id)); // Actualiza el estado local
         })

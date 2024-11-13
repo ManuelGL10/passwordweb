@@ -4,11 +4,14 @@ module.exports = {
     "./src/App.js",
     "./src/views/Inicio.jsx",
     "./src/views/DashBoard.jsx",
+    "./src/views/Login.jsx",
     "./src/components/NavBarHome.js",
     "./src/components/HomePage.js",
     "./src/components/DBNavBar.js",
     "./src/components/PasswordTable.js",
     "./src/components/AddPasswordModal.js",
+    "./src/components/LoginPage.js",
+    "./src/components/RegisterPage.js",
 
   ],
   theme: {
