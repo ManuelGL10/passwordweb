@@ -15,17 +15,24 @@ const PasswordTable = () => {
     url: "",
     password: "",
   });
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
 
   // Obtener contraseñas de la API
   useEffect(() => {
-    const userId = localStorage.getItem("userId"); // Obtener el userId desde el localStorage
-  
+    const userId = localStorage.getItem("userId");
     axios
       .get("http://localhost:4000/get_passwords", {
-        headers: { userId }, // Agregar userId en los headers
+        headers: { userId },
       })
       .then((response) => setPasswords(response.data))
       .catch((error) => console.error("Error al obtener contraseñas", error));
+
+    // Verificar suscripción y suscribirse si no está suscrito
+    if (!localStorage.getItem('isSubscribed')) {
+      subscribeToNotifications();
+      localStorage.setItem('isSubscribed', 'true'); // Marca que la suscripción fue hecha
+    }
   }, []);
   
 
@@ -155,6 +162,61 @@ const PasswordTable = () => {
           console.error("Error deleting password:", error);
         });
     };
+
+    async function subscribeToNotifications() {
+      const userId = localStorage.getItem("userId");
+    
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        try {
+          const registration = await navigator.serviceWorker.ready;
+    
+          // Verificar si ya existe una suscripción
+          const existingSubscription = await registration.pushManager.getSubscription();
+          if (existingSubscription) {
+            console.log("El usuario ya está suscrito");
+            return;
+          }
+    
+          // Solicitar permiso para notificaciones
+          const permission = await Notification.requestPermission();
+          if (permission === 'granted') {
+            const newSubscription = await registration.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: "BOUKMtuCea0YgGZ3nGNekNnNKw9WmHnOx9hKxY4umoh2V5_DcWdDzyfFXD3GBFaeckEkWFKi60clrBA7zYpJCWE"
+            });
+    
+            // Formatear los datos de suscripción junto con userId
+            const subscriptionData = {
+              ...newSubscription.toJSON(),
+              userId 
+            };
+    
+            // Enviar la suscripción a la API
+            const response = await fetch('http://localhost:4000/suscription', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(subscriptionData)
+            });
+    
+            if (!response.ok) {
+              throw new Error('Error en la solicitud: ' + response.statusText);
+            }
+    
+            const data = await response.json();
+            console.log('Suscripción guardada en la BD', data);
+          } else {
+            console.log("Permiso para notificaciones denegado");
+          }
+        } catch (error) {
+          console.error('Error en el proceso de suscripción', error);
+        }
+      } else {
+        console.log("El navegador no soporta Service Worker o Push Notifications");
+      }
+    }
+    
 
 return (
   <div className="container mx-auto px-6 py-8">
