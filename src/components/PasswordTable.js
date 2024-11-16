@@ -55,16 +55,14 @@ const PasswordTable = () => {
     setNewPassword({ ...newPassword, [e.target.name]: e.target.value });
   };
 
-  // Maneja el envío del formulario del modal
-  const handleAddPassword = () => {
-
+  const handleAddPassword = async () => {
     const userId = localStorage.getItem("userId"); 
-
-    if(!userId){
+  
+    if (!userId) {
       console.error("Error: No se ha encontrado el ID de usuario."); 
       return;
     }
-
+  
     const passwordToSend = {
       nombre: newPassword.nombre, 
       tipo_elemento: newPassword.tipo_elemento,
@@ -72,49 +70,66 @@ const PasswordTable = () => {
       password: newPassword.password,
       userId: userId,
     }; 
-
+  
     console.log("Enviando datos al servidor:", passwordToSend);
-
-    //Intenta enviar los datos al servidor 
-    fetch('http://localhost:4000/post_passwords', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }, 
-      body: JSON.stringify(passwordToSend)
-    })
-    .then(response => {
-      if (!response.ok){
-        return response.json().then(data =>{
-          throw new Error(`Error en la API: ${data.message}`);
-        });
+  
+    try {
+      // Enviar nueva contraseña al servidor
+      const response = await fetch('http://localhost:4000/post_passwords', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }, 
+        body: JSON.stringify(passwordToSend)
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error en la API: ${errorData.message}`);
       }
-      return response.json();
-    })
-    .then(data => {
-      //Actualiza la lista de contraseñas con la nueva
+  
+      const data = await response.json();
+  
+      // Actualiza la lista de contraseñas con la nueva
       setPasswords([...passwords, data]); 
       setShowModal(false); // Cierra el modal
-      setNewPassword({nombre: '', tipo_elemento: '', url: '', password: ''}); //Reinicia el formulario
-    })
-    .catch(error => {
-      console.error('Error en la petición, guardando localmente:', error); 
-      
-      if ('serviceWorker' in navigator && 'SyncManager' in window){
-        navigator.serviceWorker.ready.then(sw => {
-          return sw.sync.register('sync-passwords'); 
-        }).then(() => {
+      setNewPassword({ nombre: '', tipo_elemento: '', url: '', password: '' }); // Reinicia el formulario
+  
+      // Enviar notificación push
+      await fetch('http://localhost:4000/sendNotification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          message: `Se ha guardado la contraseña para ${newPassword.nombre}.`,
+        }),
+      });
+  
+      console.log("Notificación push enviada correctamente");
+    } catch (error) {
+      console.error('Error en la petición, guardando localmente:', error);
+  
+      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        try {
+          const sw = await navigator.serviceWorker.ready;
+          await sw.sync.register('sync-passwords'); 
           console.log('Sincronización registrada');
-        }).catch(err => console.error('Error al registrar la sincronización:', err));
+        } catch (err) {
+          console.error('Error al registrar la sincronización:', err);
+        }
       }
-
-      savePasswordToIndexedDB(passwordToSend)
-        .then(() => {
-          console.log('Tarea guardada en IndexedDB debido a la falla en la red');
-        })
-        .catch(err => console.error('Error al guardar en IndexedDB:', err));
-    });
-  }
+  
+      try {
+        await savePasswordToIndexedDB(passwordToSend);
+        console.log('Tarea guardada en IndexedDB debido a la falla en la red');
+      } catch (err) {
+        console.error('Error al guardar en IndexedDB:', err);
+      }
+    }
+  };
+  
 
   const savePasswordToIndexedDB = (password) =>{
     return new Promise((resolve, reject) => {

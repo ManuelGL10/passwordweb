@@ -37,15 +37,29 @@ self.addEventListener('activate', (event) => {
     )
 }); 
 
-//Listener para push
+// Listener para push
 self.addEventListener('push', event => {
-    const opciones = {
-        body:"mensaje", 
-        icon:'/icon/icon1024.png',
-        silent:null
+    let data = { title: 'PassGuard', body: 'Nuevo mensaje' };
+
+    if (event.data) {
+        console.log("Contenido del evento push:", event.data.text()); // Verifica qué se recibe
+        try {
+            data = event.data.json();
+        } catch (error) {
+            console.error("Error al parsear el JSON:", error);
+            data.body = event.data.text();
+            console.log(data.body)
+        }
     }
-    self.registration.showNotification('Confirmado, Luis es gay', opciones)
-})
+
+    const opciones = {
+        body: data.body,
+        icon: '/icon/icon1024.png',
+        silent: null
+    };
+
+    self.registration.showNotification(data.title, opciones);
+});
 
 self.addEventListener('fetch', event => {
     const resp = fetch(event.request).then(respuesta => {
