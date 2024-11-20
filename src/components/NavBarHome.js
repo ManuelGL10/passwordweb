@@ -131,10 +131,10 @@ const NavBarHome = () => {
             onClick={() => setIsOpen(false)}
             className="text-black hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium block"
           >
-            Funciones
+            Register
           </Link>
           <Link
-            to="/pricing"
+            to="/Register"
             onClick={() => setIsOpen(false)}
             className="text-black hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium block"
           >
