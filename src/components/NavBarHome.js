@@ -40,9 +40,9 @@ const NavBarHome = () => {
               Funciones
             </Link>
             <Link
-              to="/pricing"
+              to="/Register"
               className={`${isActive(
-                '/pricing'
+                '/Register'
               )} hover:text-gray-700 px-3 py-2 text-sm font-medium block`}
             >
               Precios
