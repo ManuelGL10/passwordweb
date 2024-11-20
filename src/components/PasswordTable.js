@@ -22,7 +22,7 @@ const PasswordTable = () => {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     axios
-      .get("http://localhost:4000/get_passwords", {
+      .get("https://passguard-server.onrender.com/get_passwords", {
         headers: { userId },
       })
       .then((response) => setPasswords(response.data))
@@ -75,7 +75,7 @@ const PasswordTable = () => {
   
     try {
       // Enviar nueva contraseña al servidor
-      const response = await fetch('http://localhost:4000/post_passwords', {
+      const response = await fetch('https://passguard-server.onrender.com/post_passwords', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ const PasswordTable = () => {
       setNewPassword({ nombre: '', tipo_elemento: '', url: '', password: '' }); // Reinicia el formulario
   
       // Enviar notificación push
-      await fetch('http://localhost:4000/sendNotification', {
+      await fetch('https://passguard-server.onrender.com/sendNotification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ const PasswordTable = () => {
     const deletePassword = (id) => {
       const userId = localStorage.getItem("userId"); // Obtén el userId de localStorage
     
-      axios.delete(`http://localhost:4000/delete/${id}`, {
+      axios.delete(`https://passguard-server.onrender.com/delete/${id}`, {
         headers: { userId } // Envía el userId en el encabezado
       })
         .then(() => {
@@ -207,7 +207,7 @@ const PasswordTable = () => {
             };
     
             // Enviar la suscripción a la API
-            const response = await fetch('http://localhost:4000/suscription', {
+            const response = await fetch('https://passguard-server.onrender.com/suscription', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

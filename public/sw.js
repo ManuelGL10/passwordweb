@@ -124,7 +124,7 @@ function syncPasswords() {
 
                 // Enviar cada tarea al backend
                 const promises = passwords.map(password => {
-                    return fetch('http://localhost:4000/post_passwords', {
+                    return fetch('https://passguard-server.onrender.com/post_passwords', {
                         method: 'POST', 
                         headers : {
                             'Content-Type': 'application/json'
