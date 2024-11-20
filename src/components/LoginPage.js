@@ -107,7 +107,7 @@ const LoginPage = () => {
         {/* Registro */}
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-600">¿No tienes una cuenta?</span>{" "}
-          <a href="#" className="text-sm text-custom-204E51 hover:underline">
+          <a href="/Register" className="text-sm text-custom-204E51 hover:underline">
             Regístrate aquí
           </a>
         </div>
